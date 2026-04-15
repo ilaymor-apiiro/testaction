@@ -21,6 +21,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Close existing heartbeat PRs
+        run: |
+          gh pr list --head ghs-pr-heartbeat --state open --json number -q '.[].number' | while read pr; do
+          gh pr close $pr --delete-branch
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create branch and change
         run: |
           git checkout -b ghs-pr-heartbeat
