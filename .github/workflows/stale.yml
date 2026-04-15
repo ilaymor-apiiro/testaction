@@ -30,6 +30,6 @@ jobs:
           git push origin ghs-pr-heartbeat
 
       - name: Create pull request
-        run: gh pr create -B main -H test1 --title "TEST PR" --body "Created by GitHub Action"
+        run: gh pr create -B main -H ghs-pr-heartbeat --title "Heartbeat PR" --body "Created by GitHub Action"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
