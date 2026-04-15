@@ -1,0 +1,17 @@
+name: Open PR
+
+on:
+  schedule:
+  - cron: '0/15 * * * *'
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+    - name: create pull request
+      run: gh pr create -B main -H test1 --title 'TEST PR' --body 'Created by Github action'
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
