@@ -2,21 +2,34 @@ name: Open PR
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: '0/15 * * * *'
 
 jobs:
   open-pr:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v6
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Create pull request
-      run: gh pr create -B main -H test1 --title 'TEST PR' --body 'Created by Github action'
-      env:
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create branch and change
+        run: |
+          git checkout -b ghs-pr-heartbeat
+          echo "Created at $(date -u)" >> file.txt
+          git add file.txt
+          git commit -m "Add file"
+          git push origin ghs-pr-heartbeat
+
+      - name: Create pull request
+        run: gh pr create -B main -H test1 --title "TEST PR" --body "Created by GitHub Action"
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
