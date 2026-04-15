@@ -24,7 +24,7 @@ jobs:
       - name: Create branch and change
         run: |
           git checkout -b ghs-pr-heartbeat
-          echo "Created at $(date -u)" >> file.txt
+          touch file.txt
           git add file.txt
           git commit -m "Add file"
           git push origin ghs-pr-heartbeat
